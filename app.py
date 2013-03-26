@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+
 from wsgiref.simple_server import make_server
 import urlparse
 
@@ -7,6 +8,7 @@ class SimpleApp(object):
         status = '200 OK'
 
         path = environ['PATH_INFO']
+	print path
 
         if path == '/':
             content_type = 'text/html'
@@ -16,7 +18,8 @@ Visit:
 <a href='error'>an error</a>,
 <a href='helmet'>an image</a>,
 <a href='somethingelse'>something else</a>, or
-<a href='form'>a form...</a>
+<a href='form'>a form</a>,
+<a href='index'> and a page of stuff.</a>
 <p>
 <img src='/helmet'>
 """
@@ -42,6 +45,15 @@ Visit:
 
             content_type = 'text/html'
             data = "First name: %s; last name: %s.  <a href='./'>return to index</a>" % (firstname, lastname)
+	elif path == '/index':
+	    content_type = 'text/html'
+	    data = open('html/index.html').read()
+	elif path == '/link.html':
+	    content_type = 'text/html'
+	    data = open('html/catastrophe.html').read()
+	elif path == '/subdir/table.html':
+	    content_type = 'text/html'
+	    data = open('html/subdir/table.html').read()
         else:
             content_type = 'text/plain'
             data = "Hello, world; got path request %s" % environ['PATH_INFO']
